@@ -6,10 +6,15 @@ RUN set -x \
 		nodejs-current \
 		npm \
 		git
+
+ARG VERSION=latest
 RUN set -x \
 	&& mkdir -p /tmp \
 	&& git clone https://github.com/zaach/jsonlint /tmp/jsonlint \
 	&& cd /tmp/jsonlint \
+	&& if [ ${VERSION} != "latest" ]; then \
+		git checkout v${VERSION}; \
+	fi \
 	&& npm install
 
 

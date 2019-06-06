@@ -67,13 +67,13 @@ if [ "${#}" -gt "0" ]; then
 	while [ "${#}" -gt "0"  ]; do
 		case "${1}" in
 			# Show Help and exit
-			--help)OPS-3126
+			--help)
 				print_usage
 				exit 0
 				;;
 			# Show Version and exit
 			--version)
-				jsonlint --version
+				jsonlint --version || true
 				exit 0
 				;;
 			# Add jsonlint argument sort-objects (-s)

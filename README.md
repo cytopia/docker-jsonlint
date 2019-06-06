@@ -15,6 +15,22 @@
 https://github.com/zaach/jsonlint
 
 
+## Available Docker image versions
+
+| Docker tag | Build from |
+|------------|------------|
+| `latest`   | [Branch: master](https://github.com/zaach/jsonlint) |
+| `1.6.0`    | [Tag: v1.6.0](https://github.com/zaach/jsonlint/tree/v1.6.0) |
+<!--
+| `1.5.0`    | [Tag: v1.5.0](https://github.com/zaach/jsonlint/tree/v1.5.0) |
+| `1.4.1`    | [Tag: v1.4.1](https://github.com/zaach/jsonlint/tree/v1.4.1) |
+| `1.4.0`    | [Tag: v1.4.0](https://github.com/zaach/jsonlint/tree/v1.4.0) |
+| `1.3.2`    | [Tag: v1.3.2](https://github.com/zaach/jsonlint/tree/v1.3.2) |
+| `1.2.0`    | [Tag: v1.2.0](https://github.com/zaach/jsonlint/tree/v1.2.0) |
+| `1.1.1`    | [Tag: v1.1.1](https://github.com/zaach/jsonlint/tree/v1.1.1) |
+| `1.1.0`    | [Tag: v1.1.0](https://github.com/zaach/jsonlint/tree/v1.1.0) |
+| `1.0.1`    | [Tag: v1.0.1](https://github.com/zaach/jsonlint/tree/v1.0.1) |
+-->
 
 ## License
 
