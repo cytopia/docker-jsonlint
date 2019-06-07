@@ -19,7 +19,6 @@ REG_GLOB='(\*.+)|(.+\*)|(.+\*.+)' # Regex pattern to identify valid glob support
 ### Show Usage
 ###
 print_usage() {
-	>&2 echo "Error, Unsupported command."
 	>&2 echo "Usage: cytopia/jsonlint jsonlint [-sti] <PATH-TO-FILE>"
 	>&2 echo "       cytopia/jsonlint jsonlint [-sti] <GLOB-PATTERN>"
 	>&2 echo "       cytopia/jsonlint jsonlint --version"
