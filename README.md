@@ -7,6 +7,14 @@
 [![](https://img.shields.io/badge/github-cytopia%2Fdocker--jsonlint-red.svg)](https://github.com/cytopia/docker-jsonlint "github.com/cytopia/docker-jsonlint")
 [![License](https://img.shields.io/badge/license-MIT-%233DA639.svg)](https://opensource.org/licenses/MIT)
 
+> #### All awesome CI images
+>
+> [ansible-lint](https://github.com/cytopia/docker-ansible-lint) |
+> [awesome-ci](https://github.com/cytopia/awesome-ci) |
+> [jsonlint](https://github.com/cytopia/docker-jsonlint) |
+> [terraform-docs](https://github.com/cytopia/docker-terraform-docs) |
+> [yamllint](https://github.com/cytopia/docker-yamllint)
+
 
 [![Docker hub](http://dockeri.co/image/cytopia/jsonlint)](https://hub.docker.com/r/cytopia/jsonlint)
 
@@ -14,6 +22,7 @@
 Dockerized version of [jsonlint](https://github.com/zaach/jsonlint)<sup>[1]</sup>, which adds
 additional functionality such as **failure on wrong indentation**, lint **multiple files via wildcard**
 search and being able to **ignore files** via wildcards.
+The image is built nightly against the latest stable version of `jsonlint` and pushed to Dockerhub.
 
 <sup>[1] Official project: https://github.com/zaach/jsonlint</sup>
 
