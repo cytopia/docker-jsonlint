@@ -1,6 +1,5 @@
 FROM alpine:latest as builder
 
-# Install dependencies
 RUN set -x \
 	&& apk add --no-cache \
 		nodejs-current \
@@ -19,6 +18,9 @@ RUN set -x \
 
 
 FROM alpine:latest
+LABEL \
+	maintainer="cytopia <cytopia@everythingcli.org>" \
+	repo="https://github.com/cytopia/docker-jsonlint"
 RUN set -x \
 	&& apk add --no-cache nodejs-current bash \
 	&& ln -s /node_modules/.bin/jsonlint /usr/bin/jsonlint
