@@ -19,10 +19,10 @@ REG_GLOB='(\*.+)|(.+\*)|(.+\*.+)' # Regex pattern to identify valid glob support
 ### Show Usage
 ###
 print_usage() {
-	>&2 echo "Usage: cytopia/jsonlint jsonlint [-sti] <PATH-TO-FILE>"
-	>&2 echo "       cytopia/jsonlint jsonlint [-sti] <GLOB-PATTERN>"
-	>&2 echo "       cytopia/jsonlint jsonlint --version"
-	>&2 echo "       cytopia/jsonlint jsonlint --help"
+	>&2 echo "Usage: cytopia/jsonlint [-sti] <PATH-TO-FILE>"
+	>&2 echo "       cytopia/jsonlint [-sti] <GLOB-PATTERN>"
+	>&2 echo "       cytopia/jsonlint --version"
+	>&2 echo "       cytopia/jsonlint --help"
 	>&2 echo
 	>&2 echo " -s                 sort object keys"
 	>&2 echo " -t CHAR            character(s) to use for indentation"

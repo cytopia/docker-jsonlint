@@ -9,6 +9,7 @@
 
 > #### All awesome CI images
 >
+> [ansible](https://github.com/cytopia/docker-ansible) |
 > [ansible-lint](https://github.com/cytopia/docker-ansible-lint) |
 > [awesome-ci](https://github.com/cytopia/awesome-ci) |
 > [jsonlint](https://github.com/cytopia/docker-jsonlint) |
@@ -16,13 +17,14 @@
 > [yamllint](https://github.com/cytopia/docker-yamllint)
 
 
+View **[Dockerfile](https://github.com/cytopia/docker-jsonlint/blob/master/Dockerfile)** on GitHub.
+
 [![Docker hub](http://dockeri.co/image/cytopia/jsonlint)](https://hub.docker.com/r/cytopia/jsonlint)
 
-
-Dockerized version of [jsonlint](https://github.com/zaach/jsonlint)<sup>[1]</sup>, which adds
+Tiny Alpine-based multistage-build dockerized version of [jsonlint](https://github.com/zaach/jsonlint)<sup>[1]</sup>, which adds
 additional functionality such as **failure on wrong indentation**, lint **multiple files via wildcard**
 search and being able to **ignore files** via wildcards.
-The image is built nightly against the latest stable version of `jsonlint` and pushed to Dockerhub.
+The image is built nightly against multiple stable versions and pushed to Dockerhub.
 
 <sup>[1] Official project: https://github.com/zaach/jsonlint</sup>
 
@@ -57,10 +59,10 @@ where your JSON files are located.
 ```bash
 $ docker run --rm cytopia/jsonlint --help
 
-Usage: cytopia/jsonlint jsonlint [-sti] <PATH-TO-FILE>
-       cytopia/jsonlint jsonlint [-sti] <GLOB-PATTERN>
-       cytopia/jsonlint jsonlint --version
-       cytopia/jsonlint jsonlint --help
+Usage: cytopia/jsonlint [-sti] <PATH-TO-FILE>
+       cytopia/jsonlint [-sti] <GLOB-PATTERN>
+       cytopia/jsonlint --version
+       cytopia/jsonlint --help
 
  -s                 sort object keys
  -t CHAR            character(s) to use for indentation
