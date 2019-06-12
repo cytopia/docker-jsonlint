@@ -53,8 +53,12 @@ _jsonlint() {
 	if ! eval "${cmd}" > "${temp}"; then
 		ret=$(( ret + 1 ))
 	fi
-	if !  diff "${file}" "${temp}"; then
-		ret=$(( ret + 1 ))
+
+	# Only diff if file is not empty
+	if [ -s "${temp}" ]; then
+		if !  diff "${file}" "${temp}"; then
+			ret=$(( ret + 1 ))
+		fi
 	fi
 
 	return "${ret}"
