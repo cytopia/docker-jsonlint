@@ -37,16 +37,6 @@ The image is built nightly against multiple stable versions and pushed to Docker
 |------------|------------|
 | `latest`   | [Branch: master](https://github.com/zaach/jsonlint) |
 | `1.6.0`    | [Tag: v1.6.0](https://github.com/zaach/jsonlint/tree/v1.6.0) |
-<!--
-| `1.5.0`    | [Tag: v1.5.0](https://github.com/zaach/jsonlint/tree/v1.5.0) |
-| `1.4.1`    | [Tag: v1.4.1](https://github.com/zaach/jsonlint/tree/v1.4.1) |
-| `1.4.0`    | [Tag: v1.4.0](https://github.com/zaach/jsonlint/tree/v1.4.0) |
-| `1.3.2`    | [Tag: v1.3.2](https://github.com/zaach/jsonlint/tree/v1.3.2) |
-| `1.2.0`    | [Tag: v1.2.0](https://github.com/zaach/jsonlint/tree/v1.2.0) |
-| `1.1.1`    | [Tag: v1.1.1](https://github.com/zaach/jsonlint/tree/v1.1.1) |
-| `1.1.0`    | [Tag: v1.1.0](https://github.com/zaach/jsonlint/tree/v1.1.0) |
-| `1.0.1`    | [Tag: v1.0.1](https://github.com/zaach/jsonlint/tree/v1.0.1) |
--->
 
 
 ## Docker mounts
@@ -77,14 +67,14 @@ Usage: cytopia/jsonlint [-sti] <PATH-TO-FILE>
 
 #### Check all JSON files and ignore `.terraform/` directories
 ```bash
-$ docker run --rm cytopia/jsonlint -v $(pwd):/data -t '  ' -i '*.terraform/*' *.json
+$ docker run --rm -v $(pwd):/data cytopia/jsonlint -t '  ' -i '*.terraform/*' *.json
 ```
 
 #### Check all JSON files for wrong indentation
 This behaviour is achieved by saving the JSON with fixed indentation within the container in a
 different location and then applying a diff against the original file.
 ```bash
-$ docker run --rm cytopia/jsonlint -v $(pwd):/data -t '  ' *.json
+$ docker run --rm -v $(pwd):/data cytopia/jsonlint -t '  ' *.json
 ```
 ```diff
 jsonlint -c  -t '  ' ./envs/dev/iam-permission/dev-policy.json
