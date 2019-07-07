@@ -92,6 +92,7 @@ if [ "${#}" -gt "0" ]; then
 				shift
 				if [ "${#}" -lt "1" ]; then
 					>&2 echo "Error, -t requires an argument"
+					exit 1
 				fi
 				ARG_CHAR="-t '${1}'"
 				shift
@@ -101,6 +102,7 @@ if [ "${#}" -gt "0" ]; then
 				shift
 				if [ "${#}" -lt "1" ]; then
 					>&2 echo "Error, -i requires an argument"
+					exit 1
 				fi
 				ARG_IGNORE="${1}"
 				shift
