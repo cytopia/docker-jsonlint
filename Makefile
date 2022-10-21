@@ -31,12 +31,24 @@ FLAVOUR    = latest
 FILE       = Dockerfile.${FLAVOUR}
 DIR        = Dockerfiles
 ifeq ($(strip $(FLAVOUR)),latest)
-	DOCKER_TAG = $(TAG)
-else
-	ifeq ($(strip $(TAG)),latest)
-		DOCKER_TAG = $(FLAVOUR)
+	ifeq ($(strip $(VERSION)),latest)
+		DOCKER_TAG = $(TAG)
 	else
+		ifeq ($(strip $(TAG)),latest)
+			DOCKER_TAG = $(VERSION)
+		else
+			DOCKER_TAG = $(VERSION)-$(TAG)
+		endif
+	endif
+else
+	ifeq ($(strip $(VERSION)),latest)
 		DOCKER_TAG = $(FLAVOUR)-$(TAG)
+	else
+		ifeq ($(strip $(TAG)),latest)
+			DOCKER_TAG = $(FLAVOUR)-$(VERSION)
+		else
+			DOCKER_TAG = $(FLAVOUR)-$(VERSION)-$(TAG)
+		endif
 	endif
 endif
 ARCH       = linux/amd64
@@ -119,25 +131,25 @@ _test-version:
 				| sed 's/.*v//g' \
 		)"; \
 		echo "Testing for latest: $${LATEST}"; \
-		if ! docker run --rm $(IMAGE) --version | grep -E "^v?$${LATEST}$$"; then \
+		if ! docker run --rm --platform $(ARCH) $(IMAGE):$(DOCKER_TAG) --version | grep -E "^v?$${LATEST}$$"; then \
 			echo "Failed"; \
 			exit 1; \
 		fi; \
 	else \
 		echo "Testing for version: $(VERSION)"; \
-		if ! docker run --rm $(IMAGE) --version | grep -E "^v?$(VERSION)$$"; then \
+		if ! docker run --rm --platform $(ARCH) $(IMAGE):$(DOCKER_TAG) --version | grep -E "^v?$(VERSION)$$"; then \
 			echo "Failed"; \
 			exit 1; \
 		fi; \
 	fi; \
 	echo "Success"; \
 
-.PHONY: _test-versionrun
+.PHONY: _test-run
 _test-run:
 	@echo "------------------------------------------------------------"
 	@echo "- Testing playbook"
 	@echo "------------------------------------------------------------"
-	@if ! docker run --rm -v $(CURRENT_DIR)/tests:/data $(IMAGE) -t '  ' *.json ; then \
+	if ! docker run --rm --platform $(ARCH) -v $(CURRENT_DIR)/tests:/data $(IMAGE):$(DOCKER_TAG) -t '  ' *.json ; then \
 		echo "Failed"; \
 		exit 1; \
 	fi; \
