@@ -56,7 +56,7 @@ The image is built nightly against multiple stable versions and pushed to Docker
 <sup>[1] Official project: https://github.com/zaach/jsonlint</sup>
 
 
-## Available Docker image versions
+## :whale: Available Docker image versions
 
 #### Rolling releaess
 
@@ -89,13 +89,13 @@ The following Docker image tags are built once and can be used for reproducible 
 | `alpine-1.6.0-0.6`  | tag: 0.6 | **`1.6.0`** | Alpine  | `amd64`, `i386`, `arm64`, `arm/v7`, `arm/v6` |
 
 
-## Docker mounts
+## :open_file_folder: Docker mounts
 
 The working directory inside the Docker container is **`/data/`** and should be mounted locally to
 where your JSON files are located.
 
 
-## Usage
+## :computer: Usage
 
 #### Display usage
 ```bash
@@ -143,7 +143,7 @@ jsonlint -c  -t '  ' ./envs/dev/iam-permission/ops-policy.json
 ```
 
 
-## Related [#awesome-ci](https://github.com/topics/awesome-ci) projects
+## :arrows_counterclockwise: Related [#awesome-ci](https://github.com/topics/awesome-ci) projects
 
 ### Docker images
 
@@ -297,7 +297,8 @@ Visit **[cytopia/makefiles](https://github.com/cytopia/makefiles)** for dependen
 The provided Makefiles will only require GNU Make and Docker itself removing the need to install anything else.
 
 
-## License
+## :page_facing_up: License
+
 
 **[MIT License](LICENSE)**
 
