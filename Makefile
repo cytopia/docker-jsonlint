@@ -2,41 +2,117 @@ ifneq (,)
 .error This Makefile requires GNU Make.
 endif
 
-.PHONY: build rebuild lint test _test-version _test-run tag pull login push enter
+# Ensure additional Makefiles are present
+MAKEFILES = Makefile.docker Makefile.lint
+$(MAKEFILES): URL=https://raw.githubusercontent.com/devilbox/makefiles/master/$(@)
+$(MAKEFILES):
+	@if ! (curl --fail -sS -o $(@) $(URL) || wget -O $(@) $(URL)); then \
+		echo "Error, curl or wget required."; \
+		echo "Exiting."; \
+		false; \
+	fi
+include $(MAKEFILES)
 
-CURRENT_DIR = $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
+# Set default Target
+.DEFAULT_GOAL := help
 
-DIR = .
-FILE = Dockerfile
-IMAGE = cytopia/jsonlint
-TAG = latest
 
-build:
-	docker build --build-arg VERSION=$(TAG) -t $(IMAGE) -f $(DIR)/$(FILE) $(DIR)
+# -------------------------------------------------------------------------------------------------
+# Default configuration
+# -------------------------------------------------------------------------------------------------
+# Own vars
+TAG        = latest
 
-rebuild: pull
-	docker build --no-cache --build-arg VERSION=$(TAG) -t $(IMAGE) -f $(DIR)/$(FILE) $(DIR)
+# Makefile.docker overwrites
+NAME       = jsonlint
+VERSION    = latest
+IMAGE      = cytopia/${NAME}
+FLAVOUR    = latest
+FILE       = Dockerfile.${FLAVOUR}
+DIR        = Dockerfiles
+ifeq ($(strip $(FLAVOUR)),latest)
+	DOCKER_TAG = $(TAG)
+else
+	ifeq ($(strip $(TAG)),latest)
+		DOCKER_TAG = $(FLAVOUR)
+	else
+		DOCKER_TAG = $(FLAVOUR)-$(TAG)
+	endif
+endif
+ARCH       = linux/amd64
+ifeq ($(strip $(ARCH)),linux/arm64)
+	ifeq ($(strip $(FLAVOUR)),latest)
+		FILE = Dockerfile.jessie-arm64
+	endif
+	ifeq ($(strip $(FLAVOUR)),jessie)
+		FILE = Dockerfile.jessie-arm64
+	endif
+endif
 
-lint:
-	@docker run --rm -v $(CURRENT_DIR):/data cytopia/file-lint file-cr --text --ignore '.git/,.github/,tests/' --path .
-	@docker run --rm -v $(CURRENT_DIR):/data cytopia/file-lint file-crlf --text --ignore '.git/,.github/,tests/' --path .
-	@docker run --rm -v $(CURRENT_DIR):/data cytopia/file-lint file-trailing-single-newline --text --ignore '.git/,.github/,tests/' --path .
-	@docker run --rm -v $(CURRENT_DIR):/data cytopia/file-lint file-trailing-space --text --ignore '.git/,.github/,tests/' --path .
-	@docker run --rm -v $(CURRENT_DIR):/data cytopia/file-lint file-utf8 --text --ignore '.git/,.github/,tests/' --path .
-	@docker run --rm -v $(CURRENT_DIR):/data cytopia/file-lint file-utf8-bom --text --ignore '.git/,.github/,tests/' --path .
+# Makefile.lint overwrites
+FL_IGNORES  = .git/,.github/,tests/,Dockerfiles/data/
+SC_IGNORES  = .git/,.github/,tests/
 
-test:
-	@$(MAKE) --no-print-directory _test-version
-	@$(MAKE) --no-print-directory _test-run
 
+# -------------------------------------------------------------------------------------------------
+#  Default Target
+# -------------------------------------------------------------------------------------------------
+.PHONY: help
+help:
+	@echo "lint                                     Lint project files and repository"
+	@echo
+	@echo "build [ARCH=...] [TAG=...]               Build Docker image"
+	@echo "rebuild [ARCH=...] [TAG=...]             Build Docker image without cache"
+	@echo "push [ARCH=...] [TAG=...]                Push Docker image to Docker hub"
+	@echo
+	@echo "manifest-create [ARCHES=...] [TAG=...]   Create multi-arch manifest"
+	@echo "manifest-push [TAG=...]                  Push multi-arch manifest"
+	@echo
+	@echo "test [ARCH=...]                          Test built Docker image"
+	@echo
+
+
+# -------------------------------------------------------------------------------------------------
+#  Docker Targets
+# -------------------------------------------------------------------------------------------------
+.PHONY: build
+build: ARGS=--build-arg VERSION=$(VERSION)
+build: docker-arch-build
+
+.PHONY: rebuild
+build: ARGS=--build-arg VERSION=$(VERSION)
+rebuild: docker-arch-rebuild
+
+.PHONY: push
+push: docker-arch-push
+
+
+# -------------------------------------------------------------------------------------------------
+#  Manifest Targets
+# -------------------------------------------------------------------------------------------------
+.PHONY: manifest-create
+manifest-create: docker-manifest-create
+
+.PHONY: manifest-push
+manifest-push: docker-manifest-push
+
+
+# -------------------------------------------------------------------------------------------------
+#  Test Targets
+# -------------------------------------------------------------------------------------------------
+.PHONY: test
+test: _test-version
+test: _test-run
+
+.PHONY: _test-version
 _test-version:
 	@echo "------------------------------------------------------------"
 	@echo "- Testing correct version"
 	@echo "------------------------------------------------------------"
-	@if [ "$(TAG)" = "latest" ]; then \
+	@if [ "$(VERSION)" = "latest" ]; then \
 		echo "Fetching latest version from GitHub"; \
 		LATEST="$$( \
-			curl -L -sS  https://github.com/zaach/jsonlint/releases/latest/ \
+			curl -L -sS  https://github.com/zaach/jsonlint/tags/ \
 				| tac | tac \
 				| grep -Eo "zaach/jsonlint/releases/tag/v[.0-9]+" \
 				| head -1 \
@@ -48,14 +124,15 @@ _test-version:
 			exit 1; \
 		fi; \
 	else \
-		echo "Testing for tag: $(TAG)"; \
-		if ! docker run --rm $(IMAGE) --version | grep -E "^v?$(TAG)$$"; then \
+		echo "Testing for version: $(VERSION)"; \
+		if ! docker run --rm $(IMAGE) --version | grep -E "^v?$(VERSION)$$"; then \
 			echo "Failed"; \
 			exit 1; \
 		fi; \
 	fi; \
 	echo "Success"; \
 
+.PHONY: _test-versionrun
 _test-run:
 	@echo "------------------------------------------------------------"
 	@echo "- Testing playbook"
@@ -65,21 +142,3 @@ _test-run:
 		exit 1; \
 	fi; \
 	echo "Success";
-
-tag:
-	docker tag $(IMAGE) $(IMAGE):$(TAG)
-
-pull:
-	@grep -E '^\s*FROM' Dockerfile \
-		| sed -e 's/^FROM//g' -e 's/[[:space:]]*as[[:space:]]*.*$$//g' \
-		| xargs -n1 docker pull;
-
-login:
-	yes | docker login --username $(USER) --password $(PASS)
-
-push:
-	@$(MAKE) tag TAG=$(TAG)
-	docker push $(IMAGE):$(TAG)
-
-enter:
-	docker run --rm --name $(subst /,-,$(IMAGE)) -it --entrypoint=/bin/sh $(ARG) $(IMAGE):$(TAG)
