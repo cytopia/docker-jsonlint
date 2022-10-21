@@ -2,7 +2,7 @@ FROM alpine:latest as builder
 
 RUN set -x \
 	&& apk add --no-cache \
-		nodejs-current \
+		nodejs \
 		npm \
 		git
 

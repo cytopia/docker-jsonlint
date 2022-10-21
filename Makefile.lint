@@ -1,0 +1,93 @@
+ifneq (,)
+.error This Makefile requires GNU Make.
+endif
+
+ifndef VERBOSE
+MAKEFLAGS += --no-print-directory
+endif
+
+
+# -------------------------------------------------------------------------------------------------
+# Default configuration
+# -------------------------------------------------------------------------------------------------
+CURRENT_DIR = $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
+# File lint
+FL_VERSION  = 0.4
+FL_IGNORES  = .git/,.github/
+# Json lint
+JL_VERSION = 1.6.0-0.5
+JL_IGNORES = .git/,.github/
+# Yamllint
+YL_VERSION = 1.26-0.9
+# Shellcheck
+SC_IGNORES = .git/,.github/
+SC_VERSION = stable
+
+
+# -------------------------------------------------------------------------------------------------
+# Lint Targets
+# -------------------------------------------------------------------------------------------------
+.PHONY: lint
+lint: lint-files
+lint: lint-yaml
+lint: lint-json
+lint: lint-bash
+
+
+.PHONY: lint-files
+lint-files:
+	@echo "################################################################################"
+	@echo "# Lint Files"
+	@echo "################################################################################"
+	@docker run --rm $$(tty -s && echo "-it" || echo) -v $(CURRENT_DIR):/data cytopia/file-lint:$(FL_VERSION) file-cr --text --ignore '$(FL_IGNORES)' --path .
+	@docker run --rm $$(tty -s && echo "-it" || echo) -v $(CURRENT_DIR):/data cytopia/file-lint:$(FL_VERSION) file-crlf --text --ignore '$(FL_IGNORES)' --path .
+	@docker run --rm $$(tty -s && echo "-it" || echo) -v $(CURRENT_DIR):/data cytopia/file-lint:$(FL_VERSION) file-trailing-single-newline --text --ignore '$(FL_IGNORES)' --path .
+	@docker run --rm $$(tty -s && echo "-it" || echo) -v $(CURRENT_DIR):/data cytopia/file-lint:$(FL_VERSION) file-trailing-space --text --ignore '$(FL_IGNORES)' --path .
+	@docker run --rm $$(tty -s && echo "-it" || echo) -v $(CURRENT_DIR):/data cytopia/file-lint:$(FL_VERSION) file-utf8 --text --ignore '$(FL_IGNORES)' --path .
+	@docker run --rm $$(tty -s && echo "-it" || echo) -v $(CURRENT_DIR):/data cytopia/file-lint:$(FL_VERSION) file-utf8-bom --text --ignore '$(FL_IGNORES)' --path .
+	@echo
+
+
+.PHONY: lint-yaml
+lint-yaml:
+	@echo "################################################################################"
+	@echo "# Lint Yaml"
+	@echo "################################################################################"
+	@if docker run --rm $$(tty -s && echo "-it" || echo) -v "$(CURRENT_DIR):/data:ro" -w /data cytopia/yamllint:$(YL_VERSION) .; then \
+		echo "OK"; \
+	else \
+		echo "Failed"; \
+		exit 1; \
+	fi;
+	@echo
+
+
+.PHONY: lint-json
+lint-json:
+	@echo "################################################################################"
+	@echo "# Lint JSON"
+	@echo "################################################################################"
+	@if docker run --rm $$(tty -s && echo "-it" || echo) -v "$(CURRENT_DIR):/data:ro" -w /data cytopia/jsonlint:$(JL_VERSION) \
+		-t '  ' -i '$(JL_IGNORES)' '*.json'; then \
+		echo "OK"; \
+	else \
+		echo "Failed"; \
+		exit 1; \
+	fi;
+	@echo
+
+
+.PHONY: lint-bash
+lint-bash:
+	@echo "################################################################################"
+	@echo "# Lint Bash"
+	@echo "################################################################################"
+	@IGNORES=""; \
+	if [ "$(SC_IGNORES)" ]; then \
+		IGNORES="$$( echo "-not \( -path \"./$(SC_IGNORES)*\"" | sed 's|,|*" -o -path "./|g' ) \)"; \
+	fi; \
+	CMD="find . -name '*.sh' $${IGNORES} -print0"; \
+	echo "$${CMD}"; \
+	if [ "$$( eval "$${CMD}" )" != "" ]; then \
+		eval "$${CMD}" | xargs -0 -n1  docker run --rm -v $(CURRENT_DIR):/data -w /data koalaman/shellcheck:$(SC_VERSION) --shell=bash; \
+	fi

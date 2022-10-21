@@ -1,0 +1,223 @@
+ifneq (,)
+.error This Makefile requires GNU Make.
+endif
+
+ifndef VERBOSE
+MAKEFLAGS += --no-print-directory
+endif
+
+
+# -------------------------------------------------------------------------------------------------
+# Docker required Variables
+# -------------------------------------------------------------------------------------------------
+NAME    =
+VERSION =
+IMAGE   =
+
+# -------------------------------------------------------------------------------------------------
+# Docker optional Variables
+# -------------------------------------------------------------------------------------------------
+NO_CACHE   =
+ARGS       =
+ARCH       = linux/amd64
+DOCKER_TAG = latest
+DIR        = .
+FILE       = Dockerfile
+
+
+# -------------------------------------------------------------------------------------------------
+# Targets
+# -------------------------------------------------------------------------------------------------
+.PHONY: docker-help
+docker-help:
+	@echo "make docker-arch-build      # Build Docker image"
+	@echo "    NAME=                   # (req) Set label name"
+	@echo "    VERSION=                # (req) Set label version"
+	@echo "    IMAGE=                  # (req) Set Docker image name"
+	@echo "    DOCKER_TAG=             # (opt) Set Docker image tag"
+	@echo "    ARCH=                   # (opt) Specify Docker platform to build against"
+	@echo "    DIR=                    # (opt) Specify directory of Docker file"
+	@echo "    FILE=                   # (opt) Specify filename of Docker file"
+	@echo "    ARGS=                   # (opt) Add additional docker build arguments"
+
+
+# -------------------------------------------------------------------------------------------------
+# Docker Architecture targets
+# -------------------------------------------------------------------------------------------------
+.PHONY: docker-arch-build
+docker-arch-build:
+	@if [ "$(NAME)" = "" ]; then \
+		echo "This make target requires the NAME variable to be set."; \
+		echo "make docker-arch-build NAME="; \
+		echo "Exiting."; \
+		false; \
+	fi
+	@if [ "$(VERSION)" = "" ]; then \
+		echo "This make target requires the VERSION variable to be set."; \
+		echo "make docker-arch-build VERSION="; \
+		echo "Exiting."; \
+		false; \
+	fi
+	@if [ "$(IMAGE)" = "" ]; then \
+		echo "This make target requires the IMAGE variable to be set."; \
+		echo "make docker-arch-build IMAGE="; \
+		echo "Exiting."; \
+		false; \
+	fi
+	@echo "################################################################################"
+	@echo "# Building $(IMAGE):$(DOCKER_TAG) (platform: $(ARCH))"
+	@echo "################################################################################"
+	docker build \
+		$(NO_CACHE) \
+		$(ARGS) \
+		--platform $(ARCH) \
+		--label "org.opencontainers.image.created"="$$(date --rfc-3339=s)" \
+		--label "org.opencontainers.image.revision"="$$(git rev-parse HEAD)" \
+		--label "org.opencontainers.image.name"="$(NAME)" \
+		--label "org.opencontainers.image.version"="$(VERSION)" \
+		--tag $(IMAGE):$(DOCKER_TAG) \
+		--file $(DIR)/$(FILE) $(DIR)
+
+
+.PHONY: docker-arch-rebuild
+docker-arch-rebuild: NO_CACHE=--no-cache
+docker-arch-rebuild: docker-pull-base-image
+docker-arch-rebuild: docker-arch-build
+
+
+.PHONY: docker-arch-push
+docker-arch-push:
+	@if [ "$(IMAGE)" = "" ]; then \
+		echo "This make target requires the IMAGE variable to be set."; \
+		echo "make docker-arch-push IMAGE="; \
+		echo "Exiting."; \
+		false; \
+	fi
+	@echo "################################################################################"
+	@echo "# Pushing Docker Image $(IMAGE):$(DOCKER_TAG)-manifest-$(subst /,-,$(ARCH))"
+	@echo "################################################################################"
+	docker tag $(IMAGE):$(DOCKER_TAG) $(IMAGE):$(DOCKER_TAG)-manifest-$(subst /,-,$(ARCH))
+	docker push $(IMAGE):$(DOCKER_TAG)-manifest-$(subst /,-,$(ARCH))
+
+
+# -------------------------------------------------------------------------------------------------
+# Docker Manifest Targets
+# -------------------------------------------------------------------------------------------------
+.PHONY: docker-manifest-create
+docker-manifest-create:
+	@if [ "$(IMAGE)" = "" ]; then \
+		echo "This make target requires the IMAGE variable to be set."; \
+		echo "make docker-manifest-create IMAGE="; \
+		echo "Exiting."; \
+		false; \
+	fi
+	@if [ "$(ARCHES)" = "" ]; then \
+		echo "This make target requires the ARCHES variable to be set."; \
+		echo "make docker-manifest-create ARCHES="; \
+		echo "Exiting."; \
+		false; \
+	fi
+	@echo "################################################################################"
+	@echo "# Creating Manifest $(IMAGE):$(DOCKER_TAG) ($(ARCHES))"
+	@echo "################################################################################"
+	@echo "docker manifest create \
+		$(IMAGE):$(DOCKER_TAG) \
+		$$( echo $(ARCHES) | sed 's/,/ /g' | sed 's|/|-|g' | xargs -n1 sh -c 'printf -- " --amend $(IMAGE):$(DOCKER_TAG)-manifest-$${1}"' -- )" \
+	| sed 's/\s\s*/ /g' \
+	| sed 's/--/\\\n  --/g'
+	@echo "docker manifest create \
+		$(IMAGE):$(DOCKER_TAG) \
+		$$( echo $(ARCHES) | sed 's/,/ /g' | sed 's|/|-|g' | xargs -n1 sh -c 'printf -- " --amend $(IMAGE):$(DOCKER_TAG)-manifest-$${1}"' -- )" \
+	| bash
+
+
+.PHONY: docker-manifest-push
+docker-manifest-push:
+	@if [ "$(IMAGE)" = "" ]; then \
+		echo "This make target requires the IMAGE variable to be set."; \
+		echo "make docker-manifest-push IMAGE="; \
+		echo "Exiting."; \
+		false; \
+	fi
+	@echo "################################################################################"
+	@echo "# Pushing Manifest $(IMAGE):$(DOCKER_TAG)"
+	@echo "################################################################################"
+	docker manifest push $(IMAGE):$(DOCKER_TAG)
+
+
+# -------------------------------------------------------------------------------------------------
+# Export/Import targets
+# -------------------------------------------------------------------------------------------------
+.PHONY: docker-save
+docker-save:
+	@if [ "$(OUTFILE)" = "" ]; then \
+		echo "This make target requires the OUTFILE variable to be set."; \
+		echo "make docker-save OUTFILE="; \
+		echo "Exiting."; \
+		false; \
+	fi
+	@if [ "$(IMAGE)" = "" ]; then \
+		echo "This make target requires the IMAGE variable to be set."; \
+		echo "make docker-arch-build IMAGE="; \
+		echo "Exiting."; \
+		false; \
+	fi
+	@echo "################################################################################"
+	@echo "# Saving $(IMAGE):$(DOCKER_TAG) to: $(OUTFILE)"
+	@echo "################################################################################"
+	docker save $(IMAGE):$(DOCKER_TAG) | gzip > "$(OUTFILE)"
+
+.PHONY: docker-load
+docker-load:
+	@if [ "$(INFILE)" = "" ]; then \
+		echo "This make target requires the INFILE variable to be set."; \
+		echo "make docker-load INFILE="; \
+		echo "Exiting."; \
+		false; \
+	fi
+	@echo "################################################################################"
+	@echo "# Loading $(INFILE)"
+	@echo "################################################################################"
+	docker load -i "$(INFILE)"
+
+
+# -------------------------------------------------------------------------------------------------
+#  Helper Targets
+# -------------------------------------------------------------------------------------------------
+.PHONY: docker-pull-base-image
+docker-pull-base-image:
+	@echo "################################################################################"
+	@echo "# Pulling Base Image $(shell grep FROM $(DIR)/$(FILE) | sed 's/^FROM\s*//g';) (platform: $(ARCH))"
+	@echo "################################################################################"
+	@grep FROM $(DIR)/$(FILE) | sed 's/^FROM\s*//g' | sed 's/\s.*$$//g' | while read -r line; do \
+		echo "docker pull --platform $(ARCH) $${line}"; \
+		while ! docker pull --platform $(ARCH) $${line}; do sleep 1; done \
+	done
+
+
+.PHONY: docker-enter
+docker-enter:
+	@if [ "$(IMAGE)" = "" ]; then \
+		echo "This make target requires the IMAGE variable to be set."; \
+		echo "make docker-enter IMAGE="; \
+		echo "Exiting."; \
+		false; \
+	fi
+	docker run --rm --platform=$(ARCH) -it --entrypoint=bash $(ARG) $(IMAGE)
+
+
+.PHONY: docker-login
+docker-login:
+ifeq ($(strip $(USERNAME)),)
+	@$(info This make target requires the USERNAME variable to be set.)
+	@$(info make docker-login USERNAME= PASSWORD=)
+	@$(info )
+	@$(error Exiting)
+endif
+ifeq ($(strip $(PASSWORD)),)
+	@$(info This make target requires the PASSWORD variable to be set.)
+	@$(info make docker-login USERNAME= PASSWORD=)
+	@$(info )
+	@$(error Exiting)
+endif
+	@yes | docker login --username $(USERNAME) --password $(PASSWORD)
