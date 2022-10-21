@@ -30,26 +30,21 @@ IMAGE      = cytopia/${NAME}
 FLAVOUR    = latest
 FILE       = Dockerfile.${FLAVOUR}
 DIR        = Dockerfiles
-ifeq ($(strip $(FLAVOUR)),latest)
+
+# Building from master branch: Tag == 'latest'
+ifeq ($(strip $(TAG)),latest)
 	ifeq ($(strip $(VERSION)),latest)
-		DOCKER_TAG = $(TAG)
+		DOCKER_TAG = $(FLAVOUR)
 	else
-		ifeq ($(strip $(TAG)),latest)
+		ifeq ($(strip $(FLAVOUR)),latest)
 			DOCKER_TAG = $(VERSION)
 		else
-			DOCKER_TAG = $(VERSION)-$(TAG)
-		endif
-	endif
-else
-	ifeq ($(strip $(VERSION)),latest)
-		DOCKER_TAG = $(FLAVOUR)-$(TAG)
-	else
-		ifeq ($(strip $(TAG)),latest)
 			DOCKER_TAG = $(FLAVOUR)-$(VERSION)
-		else
-			DOCKER_TAG = $(FLAVOUR)-$(VERSION)-$(TAG)
 		endif
 	endif
+# Building from any other branch or tag: Tag == '<REF>'
+else
+	DOCKER_TAG = $(FLAVOUR)-$(VERSION)-$(TAG)
 endif
 ARCH       = linux/amd64
 
