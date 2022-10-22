@@ -41,9 +41,6 @@
 
 View **[Dockerfiles](https://github.com/cytopia/docker-jsonlint/blob/master/Dockerfiles/)** on GitHub.
 
-[![](https://img.shields.io/docker/pulls/cytopia/jsonlint.svg)](https://hub.docker.com/r/cytopia/jsonlint)
-[![Docker](https://badgen.net/badge/icon/:latest?icon=docker&label=cytopia/jsonlint)](https://hub.docker.com/r/cytopia/jsonlint)
-
 
 **Available Architectures:**  `amd64`, `i386`, `arm64`, `arm/v7`, `arm/v6`
 
@@ -56,6 +53,9 @@ The image is built nightly against multiple stable versions and pushed to Docker
 
 
 ## :whale: Available Docker image versions
+
+[![](https://img.shields.io/docker/pulls/cytopia/jsonlint.svg)](https://hub.docker.com/r/cytopia/jsonlint)
+[![Docker](https://badgen.net/badge/icon/:latest?icon=docker&label=cytopia/jsonlint)](https://hub.docker.com/r/cytopia/jsonlint)
 
 #### Rolling releaess
 
