@@ -26,7 +26,7 @@ TAG        = latest
 # Makefile.docker overwrites
 NAME       = jsonlint
 VERSION    = latest
-IMAGE      = cytopia/${NAME}
+IMAGE      = cytopia/jsonlint
 FLAVOUR    = latest
 FILE       = Dockerfile.${FLAVOUR}
 DIR        = Dockerfiles
