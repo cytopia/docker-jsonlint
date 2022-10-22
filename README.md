@@ -110,6 +110,8 @@ Usage: cytopia/jsonlint [-sti] <PATH-TO-FILE>
  -t CHAR            character(s) to use for indentation
  -i <GLOB-PATTERN>  Ignore glob pattern when using the GLOB-PATTERN for file search.
                     (e.g.: -i '\.terraform*.json')
+                    Multiple ignores can be comma separated:
+                    (e.g.: -i '\.terraform*.json,*test.json')
  <PATH-TO-FILE>     Path to file to validate
  <GLOB-PATTERN>     Glob pattern for recursive scanning. (e.g.: *\.json)
                     Anything that "find . -name '<GLOB-PATTERN>'" will take is valid.
