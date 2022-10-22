@@ -1,9 +1,6 @@
 # Docker image for `jsonlint`
 
 [![Tag](https://img.shields.io/github/tag/cytopia/docker-jsonlint.svg)](https://github.com/cytopia/docker-jsonlint/releases)
-[![](https://images.microbadger.com/badges/version/cytopia/jsonlint:latest.svg?&kill_cache=1)](https://microbadger.com/images/cytopia/jsonlint:latest "jsonlint")
-[![](https://images.microbadger.com/badges/image/cytopia/jsonlint:latest.svg?&kill_cache=1)](https://microbadger.com/images/cytopia/jsonlint:latest "jsonlint")
-[![](https://img.shields.io/docker/pulls/cytopia/jsonlint.svg)](https://hub.docker.com/r/cytopia/jsonlint)
 [![](https://img.shields.io/badge/github-cytopia%2Fdocker--jsonlint-red.svg)](https://github.com/cytopia/docker-jsonlint "github.com/cytopia/docker-jsonlint")
 [![License](https://img.shields.io/badge/license-MIT-%233DA639.svg)](https://opensource.org/licenses/MIT)
 
@@ -44,7 +41,9 @@
 
 View **[Dockerfiles](https://github.com/cytopia/docker-jsonlint/blob/master/Dockerfiles/)** on GitHub.
 
-**[![Docker hub](http://dockeri.co/image/cytopia/jsonlint?&kill_cache=1)](https://hub.docker.com/r/cytopia/jsonlint)**
+[![](https://img.shields.io/docker/pulls/cytopia/jsonlint.svg)](https://hub.docker.com/r/cytopia/jsonlint)
+[![Docker](https://badgen.net/badge/icon/:latest?icon=docker&label=cytopia/jsonlint)](https://hub.docker.com/r/cytopia/jsonlint)
+
 
 **Available Architectures:**  `amd64`, `i386`, `arm64`, `arm/v7`, `arm/v6`
 
