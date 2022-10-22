@@ -82,11 +82,11 @@ The following Docker image tags are built once and can be used for reproducible 
 
 | Docker Tag          | Git Ref  | Jsonlint    | Flavour | Available Architectures                      |
 |---------------------|----------|-------------|---------|----------------------------------------------|
-| `latest-latest-0.6` | tag: 0.6 | latest      | default | `amd64`, `i386`, `arm64`, `arm/v7`, `arm/v6` |
+| `latest-0.6`        | tag: 0.6 | latest      | default | `amd64`, `i386`, `arm64`, `arm/v7`, `arm/v6` |
 | `alpine-latest-0.6` | tag: 0.6 | latest      | Alpine  | `amd64`, `i386`, `arm64`, `arm/v7`, `arm/v6` |
 |                     |          |             |         |                                              |
-| `latest-1.6.0-0.6`  | tag: 0.6 | **`1.6.0`** | default | `amd64`, `i386`, `arm64`, `arm/v7`, `arm/v6` |
-| `alpine-1.6.0-0.6`  | tag: 0.6 | **`1.6.0`** | Alpine  | `amd64`, `i386`, `arm64`, `arm/v7`, `arm/v6` |
+| `1.6.0-0.9`         | tag: 0.9 | **`1.6.0`** | default | `amd64`, `i386`, `arm64`, `arm/v7`, `arm/v6` |
+| `alpine-1.6.0-0.9`  | tag: 0.9 | **`1.6.0`** | Alpine  | `amd64`, `i386`, `arm64`, `arm/v7`, `arm/v6` |
 
 
 ## :open_file_folder: Docker mounts
