@@ -28,6 +28,8 @@ print_usage() {
 	>&2 echo " -t CHAR            character(s) to use for indentation"
 	>&2 echo " -i <GLOB-PATTERN>  Ignore glob pattern when using the GLOB-PATTERN for file search."
 	>&2 echo "                    (e.g.: -i '\.terraform*.json')"
+	>&2 echo "                    Multiple ignores can be comma separated:"
+	>&2 echo "                    (e.g.: -i '\.terraform*.json,*test.json')"
 	>&2 echo " <PATH-TO-FILE>     Path to file to validate"
 	>&2 echo " <GLOB-PATTERN>     Glob pattern for recursive scanning. (e.g.: *\\.json)"
 	>&2 echo "                    Anything that \"find . -name '<GLOB-PATTERN>'\" will take is valid."
@@ -137,7 +139,7 @@ if [ "${#}" -gt "0" ]; then
 					if [ -z "${ARG_IGNORE}" ]; then
 						find_cmd="find . -name \"${1}\" -type f -print0"
 					else
-						find_cmd="find . -not \( -path \"${ARG_IGNORE}\" \) -name \"${1}\" -type f -print0"
+						find_cmd="find . -not \( -path \"${ARG_IGNORE//,/*\" -o -path \"}*\" \) -name \"${1}\" -type f -print0"
 					fi
 
 					echo "${find_cmd}"

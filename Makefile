@@ -136,7 +136,11 @@ _test-run:
 	@echo "------------------------------------------------------------"
 	@echo "- Testing playbook"
 	@echo "------------------------------------------------------------"
-	if ! docker run --rm --platform $(ARCH) -v $(CURRENT_DIR)/tests:/data $(IMAGE):$(DOCKER_TAG) -t '  ' *.json ; then \
+	if ! docker run --rm --platform $(ARCH) -v $(CURRENT_DIR)/tests:/data $(IMAGE):$(DOCKER_TAG) -t '  ' test.json ; then \
+		echo "Failed"; \
+		exit 1; \
+	fi; \
+	if ! docker run --rm --platform $(ARCH) -v $(CURRENT_DIR)/tests:/data $(IMAGE):$(DOCKER_TAG) -t '  ' -i '*1.json,*2.json'  *.json ; then \
 		echo "Failed"; \
 		exit 1; \
 	fi; \
