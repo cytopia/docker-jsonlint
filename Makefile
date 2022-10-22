@@ -51,6 +51,7 @@ ARCH       = linux/amd64
 # Makefile.lint overwrites
 FL_IGNORES  = .git/,.github/,tests/,Dockerfiles/data/
 SC_IGNORES  = .git/,.github/,tests/
+JL_IGNORES  = .git/,.github/,./tests/fail*.json
 
 
 # -------------------------------------------------------------------------------------------------
