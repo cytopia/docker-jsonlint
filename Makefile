@@ -44,13 +44,18 @@ ifeq ($(strip $(TAG)),latest)
 	endif
 # Building from any other branch or tag: Tag == '<REF>'
 else
-	DOCKER_TAG = $(FLAVOUR)-$(VERSION)-$(TAG)
+	ifeq ($(strip $(FLAVOUR)),latest)
+		DOCKER_TAG = $(VERSION)-$(TAG)
+	else
+		DOCKER_TAG = $(FLAVOUR)-$(VERSION)-$(TAG)
+	endif
 endif
 ARCH       = linux/amd64
 
 # Makefile.lint overwrites
 FL_IGNORES  = .git/,.github/,tests/,Dockerfiles/data/
 SC_IGNORES  = .git/,.github/,tests/
+JL_IGNORES  = .git/,.github/,./tests/fail*.json
 
 
 # -------------------------------------------------------------------------------------------------

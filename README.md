@@ -1,9 +1,6 @@
 # Docker image for `jsonlint`
 
 [![Tag](https://img.shields.io/github/tag/cytopia/docker-jsonlint.svg)](https://github.com/cytopia/docker-jsonlint/releases)
-[![](https://images.microbadger.com/badges/version/cytopia/jsonlint:latest.svg?&kill_cache=1)](https://microbadger.com/images/cytopia/jsonlint:latest "jsonlint")
-[![](https://images.microbadger.com/badges/image/cytopia/jsonlint:latest.svg?&kill_cache=1)](https://microbadger.com/images/cytopia/jsonlint:latest "jsonlint")
-[![](https://img.shields.io/docker/pulls/cytopia/jsonlint.svg)](https://hub.docker.com/r/cytopia/jsonlint)
 [![](https://img.shields.io/badge/github-cytopia%2Fdocker--jsonlint-red.svg)](https://github.com/cytopia/docker-jsonlint "github.com/cytopia/docker-jsonlint")
 [![License](https://img.shields.io/badge/license-MIT-%233DA639.svg)](https://opensource.org/licenses/MIT)
 
@@ -44,7 +41,6 @@
 
 View **[Dockerfiles](https://github.com/cytopia/docker-jsonlint/blob/master/Dockerfiles/)** on GitHub.
 
-**[![Docker hub](http://dockeri.co/image/cytopia/jsonlint?&kill_cache=1)](https://hub.docker.com/r/cytopia/jsonlint)**
 
 **Available Architectures:**  `amd64`, `i386`, `arm64`, `arm/v7`, `arm/v6`
 
@@ -57,6 +53,9 @@ The image is built nightly against multiple stable versions and pushed to Docker
 
 
 ## :whale: Available Docker image versions
+
+[![](https://img.shields.io/docker/pulls/cytopia/jsonlint.svg)](https://hub.docker.com/r/cytopia/jsonlint)
+[![Docker](https://badgen.net/badge/icon/:latest?icon=docker&label=cytopia/jsonlint)](https://hub.docker.com/r/cytopia/jsonlint)
 
 #### Rolling releaess
 
@@ -82,11 +81,11 @@ The following Docker image tags are built once and can be used for reproducible 
 
 | Docker Tag          | Git Ref  | Jsonlint    | Flavour | Available Architectures                      |
 |---------------------|----------|-------------|---------|----------------------------------------------|
-| `latest-latest-0.6` | tag: 0.6 | latest      | default | `amd64`, `i386`, `arm64`, `arm/v7`, `arm/v6` |
+| `latest-0.6`        | tag: 0.6 | latest      | default | `amd64`, `i386`, `arm64`, `arm/v7`, `arm/v6` |
 | `alpine-latest-0.6` | tag: 0.6 | latest      | Alpine  | `amd64`, `i386`, `arm64`, `arm/v7`, `arm/v6` |
 |                     |          |             |         |                                              |
-| `latest-1.6.0-0.6`  | tag: 0.6 | **`1.6.0`** | default | `amd64`, `i386`, `arm64`, `arm/v7`, `arm/v6` |
-| `alpine-1.6.0-0.6`  | tag: 0.6 | **`1.6.0`** | Alpine  | `amd64`, `i386`, `arm64`, `arm/v7`, `arm/v6` |
+| `1.6.0-0.9`         | tag: 0.9 | **`1.6.0`** | default | `amd64`, `i386`, `arm64`, `arm/v7`, `arm/v6` |
+| `alpine-1.6.0-0.9`  | tag: 0.9 | **`1.6.0`** | Alpine  | `amd64`, `i386`, `arm64`, `arm/v7`, `arm/v6` |
 
 
 ## :open_file_folder: Docker mounts
