@@ -84,7 +84,7 @@ build: ARGS=--build-arg VERSION=$(VERSION)
 build: docker-arch-build
 
 .PHONY: rebuild
-build: ARGS=--build-arg VERSION=$(VERSION)
+rebuild: ARGS=--build-arg VERSION=$(VERSION)
 rebuild: docker-arch-rebuild
 
 .PHONY: push
