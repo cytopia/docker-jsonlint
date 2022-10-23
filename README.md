@@ -64,13 +64,13 @@ The following Docker image tags are rolling releases and are built and updated e
 [![nightly](https://github.com/cytopia/docker-jsonlint/workflows/nightly/badge.svg)](https://github.com/cytopia/docker-jsonlint/actions?query=workflow%3Anightly)
 
 
-| Docker Tag          | Git Ref  | Jsonlint    | Flavour | Available Architectures                      |
-|---------------------|----------|-------------|---------|----------------------------------------------|
-| `latest`            | master   | latest      | default | `amd64`, `i386`, `arm64`, `arm/v7`, `arm/v6` |
-| `alpine`            | master   | latest      | Alpine  | `amd64`, `i386`, `arm64`, `arm/v7`, `arm/v6` |
-|                     |          |             |         |                                              |
-| `1.6.0`             | master   | **`1.6.0`** | default | `amd64`, `i386`, `arm64`, `arm/v7`, `arm/v6` |
-| `alpine-1.6.0`      | master   | **`1.6.0`** | Alpine  | `amd64`, `i386`, `arm64`, `arm/v7`, `arm/v6` |
+| Docker Tag           | Git Ref   | Jsonlint    | Flavour | Available Architectures                      |
+|----------------------|-----------|-------------|---------|----------------------------------------------|
+| `latest`             | master    | latest      | default | `amd64`, `i386`, `arm64`, `arm/v7`, `arm/v6` |
+| `alpine`             | master    | latest      | Alpine  | `amd64`, `i386`, `arm64`, `arm/v7`, `arm/v6` |
+|                      |           |             |         |                                              |
+| `1.6.0`              | master    | **`1.6.0`** | default | `amd64`, `i386`, `arm64`, `arm/v7`, `arm/v6` |
+| `alpine-1.6.0`       | master    | **`1.6.0`** | Alpine  | `amd64`, `i386`, `arm64`, `arm/v7`, `arm/v6` |
 
 #### Point in time releases
 
@@ -79,13 +79,13 @@ The following Docker image tags are built once and can be used for reproducible 
 [![build](https://github.com/cytopia/docker-jsonlint/workflows/build/badge.svg)](https://github.com/cytopia/docker-jsonlint/actions?query=workflow%3Abuild)
 
 
-| Docker Tag          | Git Ref   | Jsonlint    | Flavour | Available Architectures                      |
-|---------------------|-----------|-------------|---------|----------------------------------------------|
-| `latest-0.6`        | tag: 0.10 | latest      | default | `amd64`, `i386`, `arm64`, `arm/v7`, `arm/v6` |
-| `alpine-latest-0.6` | tag: 0.10 | latest      | Alpine  | `amd64`, `i386`, `arm64`, `arm/v7`, `arm/v6` |
-|                     |           |             |         |                                              |
-| `1.6.0-0.9`         | tag: 0.10 | **`1.6.0`** | default | `amd64`, `i386`, `arm64`, `arm/v7`, `arm/v6` |
-| `alpine-1.6.0-0.9`  | tag: 0.10 | **`1.6.0`** | Alpine  | `amd64`, `i386`, `arm64`, `arm/v7`, `arm/v6` |
+| Docker Tag           | Git Ref   | Jsonlint    | Flavour | Available Architectures                      |
+|----------------------|-----------|-------------|---------|----------------------------------------------|
+| `latest-0.11`        | tag: 0.11 | latest      | default | `amd64`, `i386`, `arm64`, `arm/v7`, `arm/v6` |
+| `alpine-latest-0.11` | tag: 0.11 | latest      | Alpine  | `amd64`, `i386`, `arm64`, `arm/v7`, `arm/v6` |
+|                      |           |             |         |                                              |
+| `1.6.0-0.11`         | tag: 0.11 | **`1.6.0`** | default | `amd64`, `i386`, `arm64`, `arm/v7`, `arm/v6` |
+| `alpine-1.6.0-0.11`  | tag: 0.11 | **`1.6.0`** | Alpine  | `amd64`, `i386`, `arm64`, `arm/v7`, `arm/v6` |
 
 
 ## :open_file_folder: Docker mounts
