@@ -42,7 +42,7 @@
 View **[Dockerfiles](https://github.com/cytopia/docker-jsonlint/blob/master/Dockerfiles/)** on GitHub.
 
 
-**Available Architectures:**  `amd64`, `i386`, `arm64`, `arm/v7`, `arm/v6`
+**Available Architectures:**  `amd64`, `i386`, `arm64`, `arm/v7`, `arm/v6`, `ppc64le`, `s390x`
 
 Tiny Alpine-based multistage-build dockerized version of [jsonlint](https://github.com/zaach/jsonlint)<sup>[1]</sup>, which adds
 additional functionality such as **failure on wrong indentation**, lint **multiple files via wildcard**
@@ -64,13 +64,13 @@ The following Docker image tags are rolling releases and are built and updated e
 [![nightly](https://github.com/cytopia/docker-jsonlint/workflows/nightly/badge.svg)](https://github.com/cytopia/docker-jsonlint/actions?query=workflow%3Anightly)
 
 
-| Docker Tag           | Git Ref   | Jsonlint     | Flavour | Available Architectures                      |
-|----------------------|-----------|--------------|---------|----------------------------------------------|
-| `latest`             | master    | latest       | default | `amd64`, `i386`, `arm64`, `arm/v7`, `arm/v6` |
-| `alpine`             | master    | latest       | Alpine  | `amd64`, `i386`, `arm64`, `arm/v7`, `arm/v6` |
-|                      |           |              |         |                                              |
-| `1.6.0`              | master    | **`1.6.0`**  | default | `amd64`, `i386`, `arm64`, `arm/v7`, `arm/v6` |
-| `alpine-1.6.0`       | master    | **`1.6.0`**  | Alpine  | `amd64`, `i386`, `arm64`, `arm/v7`, `arm/v6` |
+| Docker Tag            | Git Ref   | Jsonlint     | Flavour | Available Architectures                      |
+|-----------------------|-----------|--------------|---------|----------------------------------------------|
+| `latest`              | master    | latest       | default | `amd64`, `i386`, `arm64`, `arm/v7`, `arm/v6`, `ppc64le`, `s390x` |
+| `alpine`              | master    | latest       | Alpine  | `amd64`, `i386`, `arm64`, `arm/v7`, `arm/v6`, `ppc64le`, `s390x` |
+|                       |           |              |         |                                              |
+| `1.6`                 | master    | **`1.6.x`**  | default | `amd64`, `i386`, `arm64`, `arm/v7`, `arm/v6`, `ppc64le`, `s390x` |
+| `alpine-1.6.0`        | master    | **`1.6.x`**  | Alpine  | `amd64`, `i386`, `arm64`, `arm/v7`, `arm/v6`, `ppc64le`, `s390x` |
 
 #### Point in time releases
 
@@ -79,13 +79,15 @@ The following Docker image tags are built once and can be used for reproducible 
 [![build](https://github.com/cytopia/docker-jsonlint/workflows/build/badge.svg)](https://github.com/cytopia/docker-jsonlint/actions?query=workflow%3Abuild)
 
 
-| Docker Tag           | Git Ref   | Jsonlint     | Flavour | Available Architectures                      |
-|----------------------|-----------|--------------|---------|----------------------------------------------|
-| `latest-0.11`        | tag: 0.11 | latest       | default | `amd64`, `i386`, `arm64`, `arm/v7`, `arm/v6` |
-| `alpine-latest-0.11` | tag: 0.11 | latest       | Alpine  | `amd64`, `i386`, `arm64`, `arm/v7`, `arm/v6` |
-|                      |           |              |         |                                              |
-| `1.6.0-0.11`         | tag: 0.11 | **`1.6.0`**  | default | `amd64`, `i386`, `arm64`, `arm/v7`, `arm/v6` |
-| `alpine-1.6.0-0.11`  | tag: 0.11 | **`1.6.0`**  | Alpine  | `amd64`, `i386`, `arm64`, `arm/v7`, `arm/v6` |
+| Docker Tag            | Git Ref      | Jsonlint     | Flavour | Available Architectures                      |
+|-----------------------|--------------|--------------|---------|----------------------------------------------|
+| `latest-<tag>`        | tag: `<tag>` | latest       | default | `amd64`, `i386`, `arm64`, `arm/v7`, `arm/v6`, `ppc64le`, `s390x` |
+| `alpine-latest-<tag>` | tag: `<tag>` | latest       | Alpine  | `amd64`, `i386`, `arm64`, `arm/v7`, `arm/v6`, `ppc64le`, `s390x` |
+|                       |              |              |         |                                              |
+| `1.6-<tag>`           | tag: `<tag>` | **`1.6.x`**  | default | `amd64`, `i386`, `arm64`, `arm/v7`, `arm/v6`, `ppc64le`, `s390x` |
+| `alpine-1.6-<tag>`    | tag: `<tag>` | **`1.6.x`**  | Alpine  | `amd64`, `i386`, `arm64`, `arm/v7`, `arm/v6`, `ppc64le`, `s390x` |
+
+> Where `<tag>` refers to the chosen git tag from this repository.
 
 
 ## :open_file_folder: Docker mounts

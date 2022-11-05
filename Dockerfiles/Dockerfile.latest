@@ -1,29 +1,35 @@
-FROM alpine:latest as builder
+FROM alpine:3.16 as builder
 
-RUN set -x \
+RUN set -eux \
 	&& apk add --no-cache \
+		coreutils \
+		git \
 		nodejs \
-		npm \
-		git
+		npm
 
 ARG VERSION=latest
-RUN set -x \
+RUN set -eux \
 	&& mkdir -p /tmp \
 	&& git clone https://github.com/zaach/jsonlint /tmp/jsonlint \
 	&& cd /tmp/jsonlint \
 	&& if [ ${VERSION} != "latest" ]; then \
-		git checkout v${VERSION}; \
+		VERSION="$( git tag | grep "${VERSION}" | sort -V | tail -1 )"; \
+		git checkout ${VERSION}; \
 	fi \
 	&& npm install
 
 
-FROM alpine:latest
+FROM alpine:3.16
 LABEL \
 	maintainer="cytopia <cytopia@everythingcli.org>" \
 	repo="https://github.com/cytopia/docker-jsonlint"
-RUN set -x \
-	&& apk add --no-cache nodejs-current bash \
+
+RUN set -eux \
+	&& apk add --no-cache \
+		bash \
+		nodejs-current \
 	&& ln -s /node_modules/.bin/jsonlint /usr/bin/jsonlint
+
 COPY --from=builder /tmp/jsonlint/node_modules/ /node_modules/
 COPY ./data/docker-entrypoint.sh /docker-entrypoint.sh
 
